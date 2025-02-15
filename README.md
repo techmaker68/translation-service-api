@@ -12,9 +12,7 @@ This Translation Management System is a scalable, high-performance API-driven se
 
 ⚡ Installation & Setup
 🔹 Using Docker (Recommended)
-bash
-Copy
-Edit
+
 docker compose build
 docker compose up -d
 docker exec -it app php artisan migrate --seed
@@ -36,16 +34,12 @@ php artisan serve
 📦 Database Seeding
 To populate translations for scalability testing (100k+ records):
 
-bash
-Copy
-Edit
+
 php artisan seed:translations --count=100000
 🔑 Authentication (Laravel Sanctum)
 Login to obtain an access token:
 
-bash
-Copy
-Edit
+
 POST /api/login
 Content-Type: application/json
 {
@@ -59,22 +53,16 @@ Swagger API Docs are available at:
 
 To generate Swagger documentation, run:
 
-bash
-Copy
-Edit
+
 php artisan l5-swagger:generate
 🛠 Testing
 Run all test cases:
 
-bash
-Copy
-Edit
+
 php artisan test
 Run only TranslationController tests:
 
-bash
-Copy
-Edit
+
 php artisan test --filter=TranslationControllerTest
 🚀 Performance Considerations
 Database indexing for faster queries
