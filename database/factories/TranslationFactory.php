@@ -13,7 +13,7 @@ class TranslationFactory extends Factory
     {
         return [
             'translation_key' => $this->faker->word,
-            'language_id' => 1, // Make sure this exists
+            'language_id' => 1, 
             'content' => $this->faker->sentence,
             'tags' => $this->faker->word,
         ];
