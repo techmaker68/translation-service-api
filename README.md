@@ -18,9 +18,7 @@ docker compose up -d
 docker exec -it app php artisan migrate --seed
 
 🔹 Manual Installation
-bash
-Copy
-Edit
+
 git clone https://github.com/your-repo.git
 cd translation-management-service-api
 composer install
@@ -33,8 +31,6 @@ php artisan serve
 
 📦 Database Seeding
 To populate translations for scalability testing (100k+ records):
-
-
 php artisan seed:translations --count=100000
 🔑 Authentication (Laravel Sanctum)
 Login to obtain an access token:
