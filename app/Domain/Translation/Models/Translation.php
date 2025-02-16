@@ -4,10 +4,11 @@ namespace App\Domain\Translation\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\TranslationFactory; // Ensure this import
 
 class Translation extends Model
 {
-    use HasFactory; 
+    use HasFactory;
 
     protected $table = 'translations';
 
@@ -22,5 +23,10 @@ class Translation extends Model
     public function language()
     {
         return $this->belongsTo(Language::class);
+    }
+
+    protected static function newFactory()
+    {
+        return TranslationFactory::new();
     }
 }

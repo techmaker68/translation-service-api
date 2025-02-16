@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TranslationFactory extends Factory
 {
-    protected $model = Translation::class;
+    protected $model = Translation::class; 
 
     public function definition()
     {
@@ -19,3 +19,4 @@ class TranslationFactory extends Factory
         ];
     }
 }
+
