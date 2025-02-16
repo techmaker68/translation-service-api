@@ -10,6 +10,7 @@ use App\Domain\Translation\Repositories\LanguageRepository;
 use App\Domain\Translation\Repositories\TranslationRepository;
 use App\Domain\Translation\Services\LanguageService;
 use App\Domain\Translation\Services\TranslationService;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,6 +36,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Schema::defaultStringLength(191);
     }
 }

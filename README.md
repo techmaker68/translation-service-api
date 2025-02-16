@@ -25,15 +25,17 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate --seed
 php artisan serve
 
 
 📦 Database Seeding
 To populate translations for scalability testing (100k+ records):
-php artisan seed:translations --count=100000
+php artisan migrate --seed
 🔑 Authentication (Laravel Sanctum)
 Login to obtain an access token:
+
+caching 
+you need to have redis configured
 
 
 POST /api/login

@@ -6,28 +6,27 @@ use App\Domain\Translation\Interfaces\TranslationRepositoryInterface;
 use App\Domain\Translation\Models\Translation;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Cache;
+
 
 class TranslationRepository implements TranslationRepositoryInterface
 {
     // initiate the modal instance once
-    private function modalInstance()
-    {
-        return new Translation();
-    }
+
+    public function __construct(private Translation $model) {}
     /**
      * Create a new translation.
      */
     public function create(array $data): Translation
     {
-        return $this->modalInstance()->create($data);
+        return $this->model->create($data);
     }
     /**
      * Get all records.
      */
     public function getAll()
     {
-        return $this->modalInstance()->paginate(100);
+        return $this->model->paginate(100);
     }
 
     /**
@@ -35,7 +34,7 @@ class TranslationRepository implements TranslationRepositoryInterface
      */
     public function update(int $id, array $data)
     {
-        $translation = $this->modalInstance()->find($id);
+        $translation = $this->model->find($id);
 
         if (!$translation) {
             throw new \Exception("Translation not found for ID: $id");
@@ -51,7 +50,7 @@ class TranslationRepository implements TranslationRepositoryInterface
      */
     public function find(int $id): ?Translation
     {
-        return $this->modalInstance()->find($id);
+        return $this->model->find($id);
     }
 
     /**
@@ -59,12 +58,11 @@ class TranslationRepository implements TranslationRepositoryInterface
      */
     public function search(string $query): Collection
     {
-        return $this->modalInstance()
-            ->where(function ($q) use ($query) {
-                $q->where('translation_key', 'like', "%$query%")
-                    ->orWhere('content', 'like', "%$query%")
-                    ->orWhereRaw("FIND_IN_SET(?, tags)", [$query]); // Search in comma-separated tags
-            })
+        return $this->model->where(function ($q) use ($query) {
+            $q->where('translation_key', 'like', "%$query%")
+                ->orWhere('content', 'like', "%$query%")
+                ->orWhereRaw("FIND_IN_SET(?, tags)", [$query]); // Search in comma-separated tags
+        })
             ->limit(100)
             ->get();
     }
@@ -76,17 +74,23 @@ class TranslationRepository implements TranslationRepositoryInterface
      */
     public function destroy(int $id)
     {
-        return $this->modalInstance()->find($id)->delete();
+        return $this->model->find($id)->delete();
     }
     /**
      * Get all translations for export.
      */
     public function export()
     {
+        $cacheKey = 'translations_export_json';
+        $json = Cache::get($cacheKey);
 
-        return DB::table('translations')
-        ->select(['id', 'translation_key', 'language_id', 'content', 'tags'])
-        ->get()
-        ->chunk(10000);
+        if (!is_null($json)) {
+            return $json;
+        }
+
+        $translations = DB::select('SELECT  translation_key, content, tags FROM translations');
+        $json = json_encode($translations);
+        Cache::forever($cacheKey, $json);
+        return $json;
     }
 }

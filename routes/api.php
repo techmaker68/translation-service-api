@@ -3,7 +3,6 @@
 use App\Domain\Translation\Controllers\API\LanguagesController;
 use App\Domain\Translation\Controllers\API\TranslationController;
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,12 +18,12 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('v1')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
+    // Route::middleware('auth:sanctum')->group(function () {
         Route::get('translations/export', [TranslationController::class, 'export']); // Export
         Route::post('translations/search', [TranslationController::class, 'search']); // Search
         Route::apiResource('translations', TranslationController::class);
         Route::apiResource('language', LanguagesController::class);
-    });
+    // });
     Route::prefix('auth')->group(function () {
         Route::post('login', [AuthController::class, 'login']);
     });

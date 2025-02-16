@@ -4,8 +4,7 @@ namespace App\Domain\Translation\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Database\Factories\TranslationFactory; // Ensure this import
-
+use Illuminate\Support\Facades\Cache;
 class Translation extends Model
 {
     use HasFactory;
@@ -25,8 +24,13 @@ class Translation extends Model
         return $this->belongsTo(Language::class);
     }
 
-    protected static function newFactory()
+    protected static function booted()
     {
-        return TranslationFactory::new();
+        static::saved(function ($model) {
+            Cache::forget('translations_export_json');
+        });
+        static::deleted(function ($model) {
+            Cache::forget('translations_export_json');
+        });
     }
 }

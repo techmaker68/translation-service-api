@@ -8,16 +8,11 @@ use App\Domain\Translation\Models\Translation;
 use App\Domain\Translation\Repositories\TranslationRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TranslationService implements TranslationServiceInterface
 {
-    protected TranslationRepository $repository;
 
-    public function __construct(TranslationRepository $repository)
-    {
-        $this->repository = $repository;
-    }
+    public function __construct(private TranslationRepository $repository) {}
 
     public function getAll()
     {
@@ -60,22 +55,22 @@ class TranslationService implements TranslationServiceInterface
      */
     public function searchTranslations(Request $request): Collection
     {
-        $filters = $request->only(['query']); // Accept a single search string
-    
+        $filters = $request->only(['query']);
+
         if (empty($filters['query'])) {
-            return collect(); // Return empty if no search query is provided
+            return collect();
         }
-    
+
         return $this->repository->search($filters['query']);
     }
-    
 
-        /**
+
+    /**
      * destriy translations.
      */
     public function deleteTranslation(int $id)
     {
-    
+
         return $this->repository->destroy($id);
     }
 

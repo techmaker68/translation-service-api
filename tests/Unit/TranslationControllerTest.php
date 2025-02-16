@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Domain\Translation\Models\Translation;
 use App\Domain\Translation\Services\TranslationService;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Mockery;
 
@@ -20,11 +19,9 @@ class TranslationControllerTest extends TestCase
     {
         parent::setUp();
     
-        // Create a test user and authenticate
         $user = User::factory()->create();
         $this->actingAs($user, 'sanctum');
     
-        // Mocking TranslationService
         $this->service = Mockery::mock(TranslationService::class);
         $this->app->instance(TranslationService::class, $this->service);
     }
@@ -63,8 +60,8 @@ class TranslationControllerTest extends TestCase
 
         $response = $this->postJson(route('translations.store'), $data);
 
-        $response->assertStatus(200) // FIXED to match controller
-            ->assertJsonFragment(['key' => 'hello']); // FIXED response structure
+        $response->assertStatus(200)
+            ->assertJsonFragment(['key' => 'hello']); 
     }
 
     /** @test */
@@ -73,7 +70,7 @@ class TranslationControllerTest extends TestCase
         $translation = Translation::factory()->create();
         $updatedData = [
             'translation_key' => 'hello_updated',
-            'language_id' => 1, // FIXED: Added missing field
+            'language_id' => 1, 
             'content' => 'Hello Updated',
             'tags' => 'common'
         ];
@@ -87,7 +84,7 @@ class TranslationControllerTest extends TestCase
         $response = $this->putJson(route('translations.update', $translation->id), $updatedData);
 
         $response->assertStatus(200)
-            ->assertJsonFragment(['key' => 'hello_updated']); // FIXED response structure
+            ->assertJsonFragment(['key' => 'hello_updated']); 
     }
 
     /** @test */
@@ -103,8 +100,8 @@ class TranslationControllerTest extends TestCase
 
         $response = $this->getJson(route('translations.show', $translation->id));
 
-        $response->assertStatus(201) // FIXED: Expecting 200 instead of 201
-            ->assertJsonFragment(['key' => $translation->translation_key]); // FIXED response structure
+        $response->assertStatus(201) 
+            ->assertJsonFragment(['key' => $translation->translation_key]); 
     }
 
     /** @test */
@@ -125,7 +122,6 @@ class TranslationControllerTest extends TestCase
     /** @test */
     public function it_can_export_translations()
     {
-        // FIX: Prevent duplicate entry issue by clearing translations first
         Translation::query()->delete();
 
         $translations = Translation::factory()->count(10)->create();

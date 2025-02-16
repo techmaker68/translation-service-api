@@ -5,7 +5,6 @@ namespace App\Domain\Translation\Services;
 use App\Domain\Translation\Interfaces\LanguageServiceInterface;
 use App\Domain\Translation\Repositories\LanguageRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 
 class LanguageService implements LanguageServiceInterface
 {

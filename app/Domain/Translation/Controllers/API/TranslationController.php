@@ -9,13 +9,9 @@ use App\Http\Requests\UpdateTranslationRequest;
 use App\Http\Resources\TranslationResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-
-
 class TranslationController extends Controller
 {
-    protected TranslationService $service;
-
-    public function __construct(TranslationService $service)
+    public function __construct(protected TranslationService $service)
     {
         $this->service = $service;
     }
@@ -75,11 +71,8 @@ class TranslationController extends Controller
         });
     }
 
-
-    public function export(): mixed
+    public function export()
     {
-        return $this->tryCatch(function () {
-            return $this->service->exportTranslations();
-        });
+        return  $this->service->exportTranslations();
     }
 }
