@@ -5,6 +5,7 @@ namespace App\Domain\Translation\Repositories;
 use App\Domain\Translation\Interfaces\TranslationRepositoryInterface;
 use App\Domain\Translation\Models\Translation;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TranslationRepository implements TranslationRepositoryInterface
@@ -83,8 +84,9 @@ class TranslationRepository implements TranslationRepositoryInterface
     public function export()
     {
 
-        return $this->modalInstance()
-            ->select(['id', 'translation_key', 'language_id', 'content', 'tags',])->get()
-            ->chunk(10000);
+        return DB::table('translations')
+        ->select(['id', 'translation_key', 'language_id', 'content', 'tags'])
+        ->get()
+        ->chunk(10000);
     }
 }
