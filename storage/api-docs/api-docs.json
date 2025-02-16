@@ -7,20 +7,35 @@
     },
     "servers": [
         {
-            "url": "/api"
+            "url": "http://127.0.0.1:8000",
+            "description": "Local API Server"
+        },
+        {
+            "url": "http://127.0.0.1:8000"
         }
     ],
     "paths": {
-        "/api/translations": {
+        "/api/v1/translations": {
             "get": {
                 "tags": [
                     "Translations"
                 ],
                 "summary": "Get all translations",
-                "operationId": "00831b261b76ebd454fb9acbb1c0a933",
+                "description": "--------------------------------------------------------------------------\nOpenAPI Annotations for Translation Management API\n--------------------------------------------------------------------------",
+                "operationId": "d9eda0bb060d0b58d10494929bdd365a",
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TranslationResource"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -32,46 +47,30 @@
                     "Translations"
                 ],
                 "summary": "Create a new translation",
-                "operationId": "0870a8688224bba1ca0640f321f0bb9b",
+                "operationId": "766359b5f708d81d85726faec34ded37",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "translation_key",
-                                    "language_id",
-                                    "content"
-                                ],
-                                "properties": {
-                                    "translation_key": {
-                                        "type": "string",
-                                        "example": "hello"
-                                    },
-                                    "language_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "content": {
-                                        "type": "string",
-                                        "example": "Hello World"
-                                    },
-                                    "tags": {
-                                        "type": "string",
-                                        "example": "greeting"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/StoreTranslationRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Translation created successfully"
+                        "description": "Translation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TranslationResource"
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Bad Request"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -79,17 +78,54 @@
                 }
             }
         },
-        "/api/translations/{id}": {
-            "put": {
+        "/api/v1/translations/{id}": {
+            "get": {
                 "tags": [
                     "Translations"
                 ],
-                "summary": "Update a translation",
-                "operationId": "b1ea1b7b148c941fd34e9f6df60c100d",
+                "summary": "Get a single translation by ID",
+                "operationId": "bacc00fe85454fd29f0f3e16f4953d6e",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Translation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TranslationResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Translation not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Update an existing translation",
+                "operationId": "14537d2108f051be247b66c65794b11e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Translation ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -101,32 +137,21 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "translation_key",
-                                    "content"
-                                ],
-                                "properties": {
-                                    "translation_key": {
-                                        "type": "string",
-                                        "example": "hello"
-                                    },
-                                    "content": {
-                                        "type": "string",
-                                        "example": "Hello Updated"
-                                    },
-                                    "tags": {
-                                        "type": "string",
-                                        "example": "common"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/UpdateTranslationRequest"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Translation updated successfully"
+                        "description": "Translation updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TranslationResource"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Translation not found"
@@ -141,11 +166,12 @@
                     "Translations"
                 ],
                 "summary": "Delete a translation",
-                "operationId": "45246e410ac1abb7aceeecab3611bb02",
+                "operationId": "9127454cdc4bf380fe0946d89b025ac2",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Translation ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -154,7 +180,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Translation deleted successfully"
+                        "description": "Translation deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TranslationResource"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Translation not found"
@@ -165,21 +201,193 @@
                 }
             }
         },
-        "/api/translations/export": {
+        "/api/v1/translations/search": {
             "get": {
                 "tags": [
                     "Translations"
                 ],
-                "summary": "Export all translations",
-                "operationId": "5d0d966efe61cc6c6dde6fc5f828b7c6",
+                "summary": "Search translations by filters",
+                "operationId": "bb684d88b99407b9defd2bd29bc67fe5",
+                "parameters": [
+                    {
+                        "name": "translation_key",
+                        "in": "query",
+                        "description": "Filter by translation key",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "language_id",
+                        "in": "query",
+                        "description": "Filter by language ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tags",
+                        "in": "query",
+                        "description": "Filter by tags (comma-separated)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Successful operation"
+                        "description": "List of matching translations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TranslationResource"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal Server Error"
                     }
                 }
+            }
+        },
+        "/api/v1/translations/export": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Export all translations",
+                "operationId": "12c1f8bf0761d27dccbeeb3d55eb42e8",
+                "responses": {
+                    "200": {
+                        "description": "File or data containing all translations"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "TranslationResource": {
+                "title": "Translation Resource",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "key": {
+                        "type": "string",
+                        "example": "hello"
+                    },
+                    "language_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "Hello World"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "greeting",
+                            "common"
+                        ]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-02T12:00:00Z"
+                    },
+                    "lang": {
+                        "description": "Language object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "English"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreTranslationRequest": {
+                "required": [
+                    "translation_key",
+                    "language_id",
+                    "content"
+                ],
+                "properties": {
+                    "translation_key": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "hello"
+                    },
+                    "language_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "Hello World"
+                    },
+                    "tags": {
+                        "type": "string",
+                        "example": "greeting",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTranslationRequest": {
+                "required": [
+                    "translation_key",
+                    "language_id",
+                    "content"
+                ],
+                "properties": {
+                    "translation_key": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "hello"
+                    },
+                    "language_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "Hello Updated"
+                    },
+                    "tags": {
+                        "type": "string",
+                        "example": "common",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
             }
         }
     },

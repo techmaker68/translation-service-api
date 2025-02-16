@@ -44,7 +44,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                  */
                 'annotations' => [
-                    base_path('app'),
+                    base_path('app/Docs'),
                 ],
             ],
         ],
@@ -92,7 +92,7 @@ return [
             /*
              * Edit to set the api's base path
              */
-            'base' => env('L5_SWAGGER_BASE_PATH', null),
+            'base' => env('L5_SWAGGER_BASE_PATH', 'http://127.0.0.1:8000'),
 
             /*
              * Absolute path to directories that should be excluded from scanning
@@ -217,21 +217,21 @@ return [
                 ],
                 */
             ],
-            'security' => [
-                /*
-                 * Examples of Securities
-                 */
-                [
-                    /*
-                    'oauth2_security_example' => [
-                        'read',
-                        'write'
-                    ],
+            // 'security' => [
+            //     /*
+            //      * Examples of Securities
+            //      */
+            //     [
+            //         /*
+            //         'oauth2_security_example' => [
+            //             'read',
+            //             'write'
+            //         ],
 
-                    'passport' => []
-                    */
-                ],
-            ],
+            //         'passport' => []
+            //         */
+            //     ],
+            // ],
         ],
 
         /*
