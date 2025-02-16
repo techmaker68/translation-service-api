@@ -6,7 +6,10 @@ namespace App\Docs;
  * --------------------------------------------------------------------------
  * OpenAPI Annotations for Translation Management API
  * --------------------------------------------------------------------------
- *
+ * * @OA\OpenApi(
+ *   security={{"sanctum":{}}}
+ * )
+ * 
  * @OA\Info(
  *     title="Translation Management API",
  *     version="1.0.0",
