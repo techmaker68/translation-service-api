@@ -5,6 +5,11 @@
         "description": "API for managing translations with CRUD operations",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
     "paths": {
         "/api/translations": {
             "get": {

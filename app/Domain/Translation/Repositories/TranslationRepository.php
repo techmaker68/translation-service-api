@@ -82,31 +82,9 @@ class TranslationRepository implements TranslationRepositoryInterface
      */
     public function export()
     {
-        return response()->stream(function () {
-            echo '[';
-            $firstRecord = true;
-    
-            foreach ($this->modalInstance()
-                ->select(['id', 'translation_key', 'language_id', 'content', 'tags',])
-                ->with(['language:id,name,code'])
-                ->orderBy('id') 
-                ->cursor() as $translation) { 
-    
-                if (!$firstRecord) {
-                    echo ','; 
-                }
-                echo json_encode($translation);
-                $firstRecord = false;
-            }
-    
-            echo ']'; 
-        }, 200, [
-            'Content-Type' => 'application/json',
-            'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
-            'Pragma' => 'no-cache',
-            'Expires' => '0',
-        ]);
+
+        return $this->modalInstance()
+            ->select(['id', 'translation_key', 'language_id', 'content', 'tags',])->get()
+            ->chunk(10000);
     }
-    
-    
 }

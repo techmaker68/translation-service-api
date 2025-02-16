@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: 'Translation Management API'
+  description: 'API for managing translations with CRUD operations'
+  version: 1.0.0
+servers:
+  -
+    url: /api
+paths:
+  /api/translations:
+    get:
+      tags:
+        - Translations
+      summary: 'Get all translations'
+      operationId: 00831b261b76ebd454fb9acbb1c0a933
+      responses:
+        200:
+          description: 'Successful operation'
+        500:
+          description: 'Internal Server Error'
+    post:
+      tags:
+        - Translations
+      summary: 'Create a new translation'
+      operationId: 0870a8688224bba1ca0640f321f0bb9b
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - translation_key
+                - language_id
+                - content
+              properties:
+                translation_key:
+                  type: string
+                  example: hello
+                language_id:
+                  type: integer
+                  example: 1
+                content:
+                  type: string
+                  example: 'Hello World'
+                tags:
+                  type: string
+                  example: greeting
+              type: object
+      responses:
+        201:
+          description: 'Translation created successfully'
+        400:
+          description: 'Bad request'
+        500:
+          description: 'Internal Server Error'
+  '/api/translations/{id}':
+    put:
+      tags:
+        - Translations
+      summary: 'Update a translation'
+      operationId: b1ea1b7b148c941fd34e9f6df60c100d
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - translation_key
+                - content
+              properties:
+                translation_key:
+                  type: string
+                  example: hello
+                content:
+                  type: string
+                  example: 'Hello Updated'
+                tags:
+                  type: string
+                  example: common
+              type: object
+      responses:
+        200:
+          description: 'Translation updated successfully'
+        404:
+          description: 'Translation not found'
+        500:
+          description: 'Internal Server Error'
+    delete:
+      tags:
+        - Translations
+      summary: 'Delete a translation'
+      operationId: 45246e410ac1abb7aceeecab3611bb02
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 'Translation deleted successfully'
+        404:
+          description: 'Translation not found'
+        500:
+          description: 'Internal Server Error'
+  /api/translations/export:
+    get:
+      tags:
+        - Translations
+      summary: 'Export all translations'
+      operationId: 5d0d966efe61cc6c6dde6fc5f828b7c6
+      responses:
+        200:
+          description: 'Successful operation'
+        500:
+          description: 'Internal Server Error'
+tags:
+  -
+    name: Translations
+    description: 'API Endpoints for managing translations'
