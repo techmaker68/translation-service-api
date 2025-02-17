@@ -42,7 +42,7 @@ POST /api/login
 Content-Type: application/json
 {
    "email": "admin@example.com",
-   "password": "password"
+   "password": "admin"
 }
 
 📖 API Documentation
